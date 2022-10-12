@@ -1,2 +1,2 @@
-[10, 30] - on polygonin sisällä.
-[40, 100] - on polygonin sisällä.
+Piste [10, 30] on monikulmion ulkopuolella.
+Piste [40, 100] on monikulmion sisapuolella.

@@ -1,66 +1,52 @@
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * @author pikku
+ * P‰‰ohjelman apuohjelmat
+ */
 public class Tools {
-
-	public Tools() {
-		// Tyhj‰ rakentaja
-	}
 	
-	private static Piste muunnaPisteeksi(String rivi) {
+	/**
+	 * @param rivi
+	 * @return
+	 */
+	public static Piste muunnaPisteeksi(String rivi) {
+		if (rivi == null) {
+			throw new IllegalArgumentException("String argumentti ei voi olla tyhja.");
+		}
+		
 		String[] numerot = rivi.split(",");
+		
+		if (numerot.length != 2) {
+			throw new IllegalArgumentException("Epakurantti string-argumentti.");
+		}
+		
         int x = Integer.parseInt(numerot[0]);
         int y = Integer.parseInt(numerot[1]);
+        
         return new Piste(x, y);
 	}
 	
-	public static ArrayList<Piste> lueTiedosto(String fileName) {
-		ArrayList<Piste> tulos = new ArrayList<Piste>();
-		try (Scanner tiedostonLukija = new Scanner(Paths.get(fileName))) {
-
-		    // luetaan tiedostoja kunnes kaikki rivit on luettu
-		    while (tiedostonLukija.hasNextLine()) {
-		        // luetaan yksi rivi
-		        String rivi = tiedostonLukija.nextLine();
-		        tulos.add(muunnaPisteeksi(rivi));
-		    }
-		} catch (Exception e) {
-		    System.out.println("Virhe: " + e.getMessage());
-		}
-		
-		return tulos;
-	}
-	
+	/**
+	 * @param koordinaatit
+	 * @param monikulmio
+	 * @return listauksen l‰pik‰ydyist‰ pisteit‰ ja niiden sijainnista suhteessa monikulmioon
+	 */
 	public static ArrayList<String> tutkiPisteet(ArrayList<Piste> koordinaatit, Monikulmio monikulmio) {
 		ArrayList<String> tulokset = new ArrayList<String>();
+		final String epakurantti = "Annetut pisteet eivat muodosta aitoa monikulmiota";
 		
-		for (var piste: koordinaatit) {
-			tulokset.add(monikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		if (monikulmio.onkoMonikulmio()) {
+			for (var piste: koordinaatit) {
+				tulokset.add(monikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+			}
+		} else {
+			tulokset.add(epakurantti);
+			System.out.println(epakurantti);	
 		}
 		
 		return tulokset;
-	}
-	
-	public static void kirjoitaSelvitys(ArrayList<Piste> koordinaatit, ArrayList<String> tulokset, File tiedostoNimi) {
-		
-		try {
-			BufferedWriter kirjoittaja = new BufferedWriter(new FileWriter(tiedostoNimi));
-			
-			for (var piste: koordinaatit) {
-				kirjoittaja.write("[" + piste.toString() + "] - on polygonin sis‰ll‰.\n");
-			}
-			
-			kirjoittaja.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 }
