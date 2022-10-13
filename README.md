@@ -1,4 +1,4 @@
-!Point in Polygon
+#Point in Polygon
 
 Simple Java program that compares coordinate point against a polygon. The program reads the point/points from the file "pisteet.txt" and the polygon from the file "polygoni.txt". The analysis returns an analysis for each point with three distict responses: 
 
