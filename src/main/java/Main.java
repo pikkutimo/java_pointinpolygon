@@ -23,7 +23,7 @@ public class Main {
 		Path polygoniTiedosto = Paths.get(POLYGONI_TIEDOSTONIMI);
 		Monikulmio monikulmio = new Monikulmio(TiedostoKasittelija.lueTiedosto(polygoniTiedosto));
 		Path pisteTiedosto = Paths.get(PISTE_TIEDOSTONIMI);
-		ArrayList<Piste> pisteKoordinaatit = TiedostoKasittelija.lueTiedosto(pisteTiedosto);
+		ArrayList<Piste> pisteKoordinaatit = Tools.muunnaPisteListaksi(TiedostoKasittelija.lueTiedosto(pisteTiedosto));
 		
 		// Varsinainen laskeva osuus, joka tutkii pisteiden suhdetta monikulmioon ja palauttaa selvityksen esim arrayList<String>
 		// ArrayList sisältäisi taulukon, jossa jokaista pistettä kohden mainitaan koordinaatit ja onko se suhteessa monikulmioon
@@ -34,7 +34,7 @@ public class Main {
 		final File selvitysTiedosto = new File(SELVITYS_TIEDOSTONIMI);
 		
 		// Kirjoitetaan selvitys tiedostoon
-		TiedostoKasittelija.kirjoitaSelvitys(tulokset, selvitysTiedosto);
+		TiedostoKasittelija.kirjoitaTiedostoon(tulokset, selvitysTiedosto.toPath());
 	}
 	
 

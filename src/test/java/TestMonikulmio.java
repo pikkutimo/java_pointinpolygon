@@ -1,6 +1,9 @@
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -54,10 +57,67 @@ public class TestMonikulmio {
 	 * 
 	 */
 	@Test
+	public void testMonikulmioYhdellaPisteellaEiOleMonikulmio() {
+		Monikulmio eiMonikulmio = new Monikulmio();
+		Piste piste = new Piste(10,10);
+		eiMonikulmio.lisaaPiste(piste);
+		
+		assertEquals(false, eiMonikulmio.onkoMonikulmio());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testMonikulmioKahdellaPisteellaEiOleMonikulmio() {
+		Monikulmio eiMonikulmio = new Monikulmio();
+		eiMonikulmio.lisaaPiste(new Piste(10, 10));
+		eiMonikulmio.lisaaPiste(new Piste(12, 11));
+		
+		assertEquals(false, eiMonikulmio.onkoMonikulmio());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testMonikulmioKolmellaPisteellaEiOleMonikulmio() {
+		Monikulmio eiMonikulmio = new Monikulmio();
+		eiMonikulmio.lisaaPiste(new Piste(10, 10));
+		eiMonikulmio.lisaaPiste(new Piste(12, 11));
+		eiMonikulmio.lisaaPiste(new Piste(13, 12));
+		
+		assertEquals(false, eiMonikulmio.onkoMonikulmio());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
 	public void testSuorakulmioOnMonikulmio() {
 		Monikulmio suorakulmio = TestiTyokalu.muodostaSuorakulmio();
 		
 		assertEquals(true, suorakulmio.onkoMonikulmio());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testMonikulmioGetPisteet() {
+		Monikulmio eiMonikulmio = new Monikulmio();
+		eiMonikulmio.lisaaPiste(new Piste(10, 10));
+		eiMonikulmio.lisaaPiste(new Piste(12, 11));
+		eiMonikulmio.lisaaPiste(new Piste(13, 12));
+		
+		ArrayList<Piste> eiMonikulmionPisteet = eiMonikulmio.getPisteet();
+		
+		assertAll(
+				() -> assertEquals(3, eiMonikulmionPisteet.size()),
+				() -> assertEquals(10, eiMonikulmionPisteet.get(0).getxKoordinaatti()),
+				() -> assertEquals(11, eiMonikulmionPisteet.get(1).getyKoordinaatti()),
+				() -> assertEquals(13, eiMonikulmionPisteet.get(2).getxKoordinaatti())
+				);
 	}
 	
 	/**
@@ -81,6 +141,9 @@ public class TestMonikulmio {
 		assertEquals(false, epakuranttiMonikulmio.onkoMonikulmio());
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testMonikulmiossaEnsimmainenJaViimeinenPistedenttisia() {
 		// Muutin monikulmion m‰‰ritelm‰‰ siten, ett‰ ensimm‰isen ja viimeisen pisteen tulee olla identtisi‰
@@ -96,7 +159,7 @@ public class TestMonikulmio {
 		Monikulmio suorakulmio = TestiTyokalu.muodostaSuorakulmio();		
 		Piste piste = new Piste(10, 5);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion reunaviivan paalla.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [10, 5] on monikulmion reunaviivan paalla.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -107,7 +170,7 @@ public class TestMonikulmio {
 		Monikulmio suorakulmio = TestiTyokalu.muodostaSuorakulmio();
 		Piste piste = new Piste(85, 150);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion ulkopuolella.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [85, 150] on monikulmion ulkopuolella.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -118,7 +181,7 @@ public class TestMonikulmio {
 		Monikulmio suorakulmio = TestiTyokalu.muodostaSuorakulmio();
 		Piste piste = new Piste(6, 6);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion sisapuolella.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [6, 6] on monikulmion sisapuolella.", suorakulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 
 	/**
@@ -129,7 +192,7 @@ public class TestMonikulmio {
 		Monikulmio kolmio = TestiTyokalu.muodostaKolmio();
 		Piste piste = new Piste(50, 5);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion reunaviivan paalla.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [50, 5] on monikulmion reunaviivan paalla.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -140,7 +203,7 @@ public class TestMonikulmio {
 		Monikulmio kolmio = TestiTyokalu.muodostaKolmio();
 		Piste piste = new Piste(1, 1);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion ulkopuolella.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [1, 1] on monikulmion ulkopuolella.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -151,7 +214,7 @@ public class TestMonikulmio {
 		Monikulmio kolmio = TestiTyokalu.muodostaKolmio();
 		Piste piste = new Piste(50, 10);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion sisapuolella.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [50, 10] on monikulmion sisapuolella.", kolmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 		
 	}
 	
@@ -163,7 +226,7 @@ public class TestMonikulmio {
 		Monikulmio suunnikas = TestiTyokalu.muodostaSuunnikas();
 		Piste piste = new Piste(30, 55);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion reunaviivan paalla.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [30, 55] on monikulmion reunaviivan paalla.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -174,7 +237,7 @@ public class TestMonikulmio {
 		Monikulmio suunnikas = TestiTyokalu.muodostaSuunnikas();
 		Piste piste = new Piste(4, 4);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion ulkopuolella.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [4, 4] on monikulmion ulkopuolella.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -185,7 +248,7 @@ public class TestMonikulmio {
 		Monikulmio suunnikas = TestiTyokalu.muodostaSuunnikas();
 		Piste piste = new Piste(30, 30);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion sisapuolella.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [30, 30] on monikulmion sisapuolella.", suunnikas.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -196,7 +259,7 @@ public class TestMonikulmio {
 		Monikulmio konkaaviKuusikulmio = TestiTyokalu.muodostaKonkaaviKuusikulmio();
 		Piste piste = new Piste(55, 55);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion reunaviivan paalla.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [55, 55] on monikulmion reunaviivan paalla.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 
 	/**
@@ -207,7 +270,7 @@ public class TestMonikulmio {
 		Monikulmio konkaaviKuusikulmio = TestiTyokalu.muodostaKonkaaviKuusikulmio();
 		Piste piste = new Piste(35, 5);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion ulkopuolella.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [35, 5] on monikulmion ulkopuolella.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 
 	/**
@@ -216,9 +279,9 @@ public class TestMonikulmio {
 	@Test
 	public void testPisteenSijaintiSuhteessaKonkaaviinKuusiokulmioonTunnistaaPisteenSisalla() {
 		Monikulmio konkaaviKuusikulmio = TestiTyokalu.muodostaKonkaaviKuusikulmio();
-		Piste piste = new Piste(57, 57);
+		Piste piste = new Piste(56, 55);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion sisapuolella.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [56, 55] on monikulmion sisapuolella.", konkaaviKuusikulmio.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 	
 	/**
@@ -229,7 +292,7 @@ public class TestMonikulmio {
 		Monikulmio pentagrammi = TestiTyokalu.muodostaPentagrammi();
 		Piste piste = new Piste(100, 5);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion reunaviivan paalla.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [100, 5] on monikulmion reunaviivan paalla.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 
 	/**
@@ -240,7 +303,7 @@ public class TestMonikulmio {
 		Monikulmio pentagrammi = TestiTyokalu.muodostaPentagrammi();
 		Piste piste = new Piste(135, 15);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion ulkopuolella.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [135, 15] on monikulmion ulkopuolella.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 
 	/**
@@ -251,6 +314,6 @@ public class TestMonikulmio {
 		Monikulmio pentagrammi = TestiTyokalu.muodostaPentagrammi();
 		Piste piste = new Piste(100, 60);
 		
-		assertEquals("Piste " + piste.toString() + " on monikulmion sisapuolella.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
+		assertEquals("Piste [100, 60] on monikulmion sisapuolella.", pentagrammi.pisteenSijaintiSuhteessaMonikulmioon(piste));
 	}
 }

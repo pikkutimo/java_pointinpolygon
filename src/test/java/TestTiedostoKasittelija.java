@@ -1,6 +1,8 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,12 +39,16 @@ class TestTiedostoKasittelija {
      */
     @Test
     public void testLuePolygoniTiedosto() throws IOException {
-    	Path polygoniTiedosto = tilapaisHakemisto.resolve("polygoni.txt");
+    	Path polygoniTiedosto = tilapaisHakemisto.resolve("testi_polygoni.txt");
     	List<String> polygoniRivit = Arrays.asList("50,5", "25,50", "75,50", "50,5");
     	Files.write(polygoniTiedosto, polygoniRivit);
     	var luettuTiedosto = TiedostoKasittelija.lueTiedosto(polygoniTiedosto);
     	
-    	assertEquals("[50, 5]", luettuTiedosto.get(0).toString());
+    	assertAll(
+    			() -> assertEquals("50,5", luettuTiedosto.get(0).toString()),
+    			() -> assertEquals("25,50", luettuTiedosto.get(1).toString()),
+    			() -> assertEquals("75,50", luettuTiedosto.get(2).toString()),
+    			() -> assertEquals("50,5", luettuTiedosto.get(3).toString()));
     }
     
     /**
@@ -50,13 +56,16 @@ class TestTiedostoKasittelija {
      */
     @Test
     public void testLuePisteTiedosto() throws IOException {
-    	Path pisteTiedosto = tilapaisHakemisto.resolve("pisteet.txt");
+    	Path pisteTiedosto = tilapaisHakemisto.resolve("testi_pisteet.txt");
     	List<String> pisteRivit = Arrays.asList("50,5", "1,1", "50,10");
     	Files.write(pisteTiedosto, pisteRivit);
     	
     	var luettuTiedosto = TiedostoKasittelija.lueTiedosto(pisteTiedosto);
     	
-    	assertEquals("[1, 1]", luettuTiedosto.get(1).toString());
+    	assertAll(
+    			() -> assertEquals("50,5", luettuTiedosto.get(0).toString()),
+    			() -> assertEquals("1,1", luettuTiedosto.get(1).toString()),
+    			() -> assertEquals("50,10", luettuTiedosto.get(2).toString()));
     }
     
     /**
@@ -71,36 +80,10 @@ class TestTiedostoKasittelija {
 		});
     }
     
-    /**
-     * @throws IOException
-     */
-    @Test
-    public void testVirheellinenRiviTiedostossaLopettaaOhjelman() throws IOException {
-    	Path virheellinenTiedosto = tilapaisHakemisto.resolve("virhe.txt");
-//    	File virheellinenTiedosto = new File("virhe.txt");
-    	List<String> virheRivit = Arrays.asList("50,5", "12,12,12", "50,10");
-    	Files.write(virheellinenTiedosto, virheRivit);
-    	
-//    	assertTrue("File should exist", Files.exists(virhe));
-    	assertThrows(IllegalArgumentException.class, () -> {
-    		var luettuTiedosto = TiedostoKasittelija.lueTiedosto(virheellinenTiedosto);
-		});
-    }
     
     /**
      * @throws IOException
      */
-    @Test
-    public void testTyhjaRiviTiedostossaLopettaaOhjelman() throws IOException {
-    	Path virheellinenTiedosto = tilapaisHakemisto.resolve("virhe.txt");
-    	List<String> virheRivit = Arrays.asList("50,5", "", "50,10");
-    	Files.write(virheellinenTiedosto, virheRivit);
-    	
-    	assertThrows(IllegalArgumentException.class, () -> {
-    		var luettuTiedosto = TiedostoKasittelija.lueTiedosto(virheellinenTiedosto);
-		});
-    }
-    
     @Test
     public void testKirjoittaSelvityksenValidilleMonikulmiolleJaYhdellePisteelle() throws IOException {
 		Monikulmio kolmio = TestiTyokalu.muodostaKolmio();
@@ -109,14 +92,19 @@ class TestTiedostoKasittelija {
 		pisteet.add(new Piste(50, 5));
 		
 		var tulokset = Tools.tutkiPisteet(pisteet, kolmio);
-		File selvitysTiedosto = new File("selvitys.txt");
-		TiedostoKasittelija.kirjoitaSelvitys(tulokset, selvitysTiedosto);
+		File selvitysTiedosto = new File("testi_selvitys.txt");
+		TiedostoKasittelija.kirjoitaTiedostoon(tulokset, selvitysTiedosto.toPath());
 		String rivi = Files.readAllLines(selvitysTiedosto.toPath()).get(0);
 		
-		assertEquals("Piste [50, 5] on monikulmion reunaviivan paalla.", rivi);
+		assertAll(
+    			() -> assertTrue(selvitysTiedosto.exists()),
+    			() -> assertEquals("Piste [50, 5] on monikulmion reunaviivan paalla.", rivi));
 
     }
     
+    /**
+     * @throws IOException
+     */
     @Test
     public void testKirjoittaSelvityksenValidilleMonikulmiolleJaKahdellePisteelle() throws IOException {
 		Monikulmio kolmio = TestiTyokalu.muodostaKolmio();
@@ -126,11 +114,13 @@ class TestTiedostoKasittelija {
 		pisteet.add(new Piste(1, 1));
 		
 		var tulokset = Tools.tutkiPisteet(pisteet, kolmio);
-		File selvitysTiedosto = new File("selvitys.txt");
-		TiedostoKasittelija.kirjoitaSelvitys(tulokset, selvitysTiedosto);
+		File selvitysTiedosto = new File("testi_selvitys.txt");
+		TiedostoKasittelija.kirjoitaTiedostoon(tulokset, selvitysTiedosto.toPath());
 		String rivi = Files.readAllLines(selvitysTiedosto.toPath()).get(0);
 		
-		assertEquals("Piste [50, 5] on monikulmion reunaviivan paalla.", rivi);
+		assertAll(
+    			() -> assertTrue(selvitysTiedosto.exists()),
+    			() -> assertEquals("Piste [50, 5] on monikulmion reunaviivan paalla.", rivi));
 
     }
     
@@ -145,11 +135,13 @@ class TestTiedostoKasittelija {
 		pisteet.add(new Piste(50, 5));
 		
 		var tulokset = Tools.tutkiPisteet(pisteet, epakuranttiMonikulmio);
-		File selvitysTiedosto = new File("selvitys.txt");
-		TiedostoKasittelija.kirjoitaSelvitys(tulokset, selvitysTiedosto);
+		File selvitysTiedosto = new File("testi_selvitys.txt");
+		TiedostoKasittelija.kirjoitaTiedostoon(tulokset, selvitysTiedosto.toPath());
 		String rivi = Files.readAllLines(selvitysTiedosto.toPath()).get(0);
 
-		assertEquals("Annetut pisteet eivat muodosta aitoa monikulmiota", rivi);
+		assertAll(
+    			() -> assertTrue(selvitysTiedosto.exists()),
+    			() -> assertEquals("Annetut pisteet eivat muodosta aitoa monikulmiota", rivi));
     }
     
     /**
@@ -160,11 +152,12 @@ class TestTiedostoKasittelija {
     	System.setOut(new PrintStream(outputStreamCaptor));
 
 		ArrayList<String> tulokset = new ArrayList<String>();
-		File selvitysTiedosto = new File("selvitys.txt");
-		TiedostoKasittelija.kirjoitaSelvitys(tulokset, selvitysTiedosto);
+		File selvitysTiedosto = new File("testi_selvitys.txt");
+		TiedostoKasittelija.kirjoitaTiedostoon(tulokset, selvitysTiedosto.toPath());
 	
-		assertEquals("Tiedosto tyhja, kirjoitus peruttu.", outputStreamCaptor.toString()
-			      .trim());
+		assertAll(
+    			() -> assertEquals(0, selvitysTiedosto.length()),
+    			() -> assertEquals("Tiedosto tyhja, kirjoitus peruttu.", outputStreamCaptor.toString().trim()));
 		
 		System.setOut(standardOut);
     }

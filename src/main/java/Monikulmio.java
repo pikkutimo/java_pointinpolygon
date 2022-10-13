@@ -16,7 +16,6 @@ public class Monikulmio {
 	 * Monikulmion kulmien koordinaatit
 	 */
 	private ArrayList<Piste> pisteet = new ArrayList<Piste>();
-	private int f;
 	
 	/**
 	 * @return
@@ -28,8 +27,9 @@ public class Monikulmio {
 	/**
 	 * @param koordinaatit
 	 */
-	public Monikulmio(ArrayList<Piste> koordinaatit) {
-		this.pisteet = koordinaatit;
+	public Monikulmio(ArrayList<String> koordinaatit) {
+		var muunnetutPisteet = Tools.muunnaPisteListaksi(koordinaatit);
+		this.pisteet = muunnetutPisteet;
 	}
 	
 	/**

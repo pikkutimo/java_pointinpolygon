@@ -22,10 +22,23 @@ public class Tools {
 			throw new IllegalArgumentException("Epakurantti string-argumentti.");
 		}
 		
-        int x = Integer.parseInt(numerot[0]);
-        int y = Integer.parseInt(numerot[1]);
+        int x = Integer.parseInt(numerot[0].trim());
+        int y = Integer.parseInt(numerot[1].trim());
         
         return new Piste(x, y);
+	}
+	
+	/**
+	 * @param koordinaatit
+	 * @return
+	 */
+	public static ArrayList<Piste> muunnaPisteListaksi(ArrayList<String> koordinaatit) {
+		ArrayList<Piste> pisteet = new ArrayList<Piste>();
+		for (var koordinaatti: koordinaatit) {
+			pisteet.add(Tools.muunnaPisteeksi(koordinaatti));
+		}
+		
+		return pisteet;
 	}
 	
 	/**

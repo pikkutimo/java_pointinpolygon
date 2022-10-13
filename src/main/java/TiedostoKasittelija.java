@@ -9,63 +9,39 @@ public class TiedostoKasittelija {
 	
 	/**
 	 * @param fileName
-	 * @return palauttaa luetun tiedoston koordinaatit listana pisteitä
+	 * @return palauttaa luetun tiedoston koordinaatit listana
 	 * @throws IOException 
 	 */
-	public static ArrayList<Piste> lueTiedosto(Path tiedostoPolku) throws IOException {
-		
-//		File tiedosto = new File(tiedostoNimi);
-//		if (!tiedosto.exists()) {
-//			System.out.println("Tiedosto " + tiedostoNimi + " puuttuu.");
-//			throw new IOException("Tiedosto " + tiedostoNimi + " puuttuu.");
-//		}
-		
-//		Path tiedostoPolku = tiedosto.toPath();
+	public static ArrayList<String> lueTiedosto(Path tiedostoPolku) throws IOException {;
 		List<String> rivit = Files.readAllLines(tiedostoPolku);
+
 		
-		ArrayList<Piste> tulos = new ArrayList<Piste>();
-		for (var rivi : rivit) {
-			tulos.add(Tools.muunnaPisteeksi(rivi));
-		}
-		
-		return tulos;
+		return new ArrayList<String>(rivit);
 	}
 	
+	
+	/**
+	 * @param pisteet
+	 * @param tiedostopolku
+	 * @throws IOException
+	 */
 	public static void kirjoitaPisteitaTiedostoon(ArrayList<String> pisteet, Path tiedostopolku) throws IOException {
 		Files.write(tiedostopolku, pisteet);
 	}
 	
-//	public static ArrayList<Piste> lueTiedosto(String tiedostoNimi) throws IOException {
-//		
-//		File tiedosto = new File(tiedostoNimi);
-//		if (!tiedosto.exists()) {
-//			System.out.println("Tiedosto " + tiedostoNimi + " puuttuu.");
-//			throw new IOException("Tiedosto " + tiedostoNimi + " puuttuu.");
-//		}
-//		
-//		Path tiedostoPolku = tiedosto.toPath();
-//		List<String> rivit = Files.readAllLines(tiedostoPolku);
-//		
-//		ArrayList<Piste> tulos = new ArrayList<Piste>();
-//		for (var rivi : rivit) {
-//			tulos.add(Tools.muunnaPisteeksi(rivi));
-//		}
-//		
-//		return tulos;
-//	}
-//	
 	/**
 	 * Kirjoitttaa selvityksen tutkiPisteet-metodin tuloksen mukaisesti tiedostoon
 	 * @param tulokset
 	 * @param tiedostoNimi
 	 * @throws IOException 
 	 */
-	public static void kirjoitaSelvitys(ArrayList<String> tulokset, File tiedosto) throws IOException {
+	public static void kirjoitaTiedostoon(ArrayList<String> tulokset, Path tiedostoPolku) throws IOException {
 		
 		if (tulokset.size() == 0) {
 			System.out.println("Tiedosto tyhja, kirjoitus peruttu.");
 			return;
 		}
-		Files.write(tiedosto.toPath(), tulokset);
+		
+		Files.write(tiedostoPolku, tulokset);
 	}
 }

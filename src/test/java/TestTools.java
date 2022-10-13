@@ -1,6 +1,8 @@
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExpectedException;
 
 public class TestTools {
@@ -43,7 +46,10 @@ public class TestTools {
 		String pisteTekstina = "1,2";
 		Piste testiPiste = Tools.muunnaPisteeksi(pisteTekstina);
 
-		assertEquals(1, testiPiste.getxKoordinaatti());
+		assertAll(
+				() -> assertEquals(1, testiPiste.getxKoordinaatti()),
+				() -> assertEquals(2, testiPiste.getyKoordinaatti())
+				);
 	}
 	
 	/**
@@ -53,9 +59,25 @@ public class TestTools {
 	public void testMuunnaPisteeksiTunnistaaEpakurantinStringin() {
 		String pisteTekstina = "1,2,3";
 		
-		assertThrows(IllegalArgumentException.class, () -> {
+		IllegalArgumentException heitto = assertThrows(IllegalArgumentException.class, () -> {
 			Piste piste = Tools.muunnaPisteeksi(pisteTekstina);
 		});
+		
+		assertEquals("Epakurantti string-argumentti.", heitto.getMessage());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testMuunnaPisteeksiOsaaPoistaaTyhjatMerkit() {
+		String pisteTekstina = "1 , 2";
+		Piste testiPiste = Tools.muunnaPisteeksi(pisteTekstina);
+
+		assertAll(
+			() -> assertEquals(1, testiPiste.getxKoordinaatti()),
+			() -> assertEquals(2, testiPiste.getyKoordinaatti())
+		);
 	}
 	
 	/**
@@ -63,14 +85,14 @@ public class TestTools {
 	 */
 	@Test
 	public void testMuunnaPisteeksiTunnistaaVaaranMittaisenStringin() {
-		Throwable exception = assertThrows(
-	            IllegalArgumentException.class, () -> {
-	            	String pisteTekstina = "1,2,3";
-	            	Piste piste = Tools.muunnaPisteeksi(pisteTekstina);
-	            }
-	    );
-	 
-	    assertEquals("Epakurantti string-argumentti.", exception.getMessage());
+		
+		IllegalArgumentException heitto = assertThrows(IllegalArgumentException.class, () -> {
+			String pisteTekstina = "1,2,3";
+        	Piste piste = Tools.muunnaPisteeksi(pisteTekstina);
+		});
+		
+		assertEquals("Epakurantti string-argumentti.", heitto.getMessage());
+		
 	}
 	
 	/**
@@ -78,14 +100,13 @@ public class TestTools {
 	 */
 	@Test
 	public void testMuunnaPisteeksiTunnistaaTyhjanStringin() {
-	    Throwable exception = assertThrows(
-	            IllegalArgumentException.class, () -> {
-	            	String pisteTekstina = null;
-	            	Piste piste = Tools.muunnaPisteeksi(pisteTekstina);
-	            }
-	    );
-	 
-	    assertEquals("String argumentti ei voi olla tyhja.", exception.getMessage());
+		
+		IllegalArgumentException heitto = assertThrows(IllegalArgumentException.class, () -> {
+			String pisteTekstina = null;
+        	Piste piste = Tools.muunnaPisteeksi(pisteTekstina);
+		});
+		
+		assertEquals("String argumentti ei voi olla tyhja.", heitto.getMessage());
 	}
 	
 	/**

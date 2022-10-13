@@ -1,2 +1,2 @@
-Piste [10, 30] on monikulmion ulkopuolella.
-Piste [40, 100] on monikulmion sisapuolella.
+Piste [50, 5] on monikulmion reunaviivan paalla.
+Piste [1, 1] on monikulmion ulkopuolella.

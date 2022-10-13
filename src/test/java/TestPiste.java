@@ -26,7 +26,7 @@ public class TestPiste {
 	 */
 	@Test
 	public void testHaeKoordinaatitX() {
-		assertEquals(x, piste.haeKoordinaatit()[0]);
+		assertEquals(3, piste.haeKoordinaatit()[0]);
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class TestPiste {
 	 */
 	@Test
 	public void testHaeKoordinaatitY() {
-		assertEquals(y, piste.haeKoordinaatit()[1]);
+		assertEquals(4, piste.haeKoordinaatit()[1]);
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class TestPiste {
 		int uusiXKoordinaatti = 10;
 		piste.setxKoordinaatti(uusiXKoordinaatti);
 
-		assertEquals(uusiXKoordinaatti, piste.haeKoordinaatit()[0]);
+		assertEquals(10, piste.haeKoordinaatit()[0]);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class TestPiste {
 		int uusiYKoordinaatti = 10;
 		piste.setyKoordinaatti(uusiYKoordinaatti);
 
-		assertEquals(uusiYKoordinaatti, piste.haeKoordinaatit()[1]);
+		assertEquals(10, piste.haeKoordinaatit()[1]);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class TestPiste {
 	 */
 	@Test
 	public void testGetxKoordinaatti() {
-		assertEquals(x, piste.getxKoordinaatti());
+		assertEquals(3, piste.getxKoordinaatti());
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class TestPiste {
 	 */
 	@Test
 	public void testGetyKoordinaatti() {
-		assertEquals(y, piste.getyKoordinaatti());
+		assertEquals(4, piste.getyKoordinaatti());
 	}
 	
 	/**
@@ -81,9 +81,8 @@ public class TestPiste {
 	@Test
 	public void testPisteenTulostaminen() {
 		String odotettuTuloste = "[3, 4]";
-		String tuloste = piste.toString();
 
-		assertEquals(odotettuTuloste, tuloste);
+		assertEquals(odotettuTuloste, piste.toString());
 	}
 
 }
